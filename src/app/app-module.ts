@@ -14,12 +14,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
+import { provideHttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Home } from './pages/home/home';
 
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { TimeAgoPipe } from './pipes/time-ago-pipe';
+
 @NgModule({
-  declarations: [App, Header, Home],
+  declarations: [App, Header, Home, TimeAgoPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -33,8 +40,12 @@ import { Home } from './pages/home/home';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatButtonToggleModule,
   ],
-  providers: [provideBrowserGlobalErrorListeners()],
+  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
   bootstrap: [App],
 })
 export class AppModule {}
