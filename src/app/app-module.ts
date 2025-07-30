@@ -23,6 +23,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
 
 @NgModule({
@@ -44,6 +45,7 @@ import { TimeAgoPipe } from './pipes/time-ago-pipe';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatButtonToggleModule,
+    MatTooltipModule,
   ],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
   bootstrap: [App],

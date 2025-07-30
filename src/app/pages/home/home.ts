@@ -58,4 +58,8 @@ export class Home implements AfterViewInit {
   onViewChange(event: MatButtonToggleChange): void {
     console.log('View changed to:', event.value);
   }
+
+  getFilename(gist: Gist): string {
+    return gist?.files ? Object.keys(gist.files)[0] : 'N/A';
+  }
 }
