@@ -1,11 +1,14 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-
-type GitHubProfile = {
-  html_url?: string;
-};
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  throwError,
+} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -13,16 +16,14 @@ export class AuthService {
   private githubProfileUrlSubject = new BehaviorSubject<string | null>(null);
   githubProfileUrl$ = this.githubProfileUrlSubject.asObservable();
 
-  // Move this below the constructor!
   userWithProfile$: Observable<{
     user: firebase.User | null;
     githubUrl: string | null;
   }>;
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth, private http: HttpClient) {
     this.user$ = this.afAuth.authState;
 
-    // Safe to use this.user$ here now
     this.userWithProfile$ = combineLatest([
       this.user$,
       this.githubProfileUrl$,
@@ -33,10 +34,14 @@ export class AuthService {
     const provider = new firebase.auth.GithubAuthProvider();
     try {
       const result = await this.afAuth.signInWithPopup(provider);
-      const profile = result.additionalUserInfo?.profile as
-        | GitHubProfile
-        | undefined;
-      this.setGitHubProfileUrl(profile);
+      const credential = result.credential as firebase.auth.OAuthCredential;
+      const token = credential?.accessToken;
+
+      if (token) {
+        localStorage.setItem('githubAccessToken', token);
+      } else {
+        console.warn('GitHub access token not found.');
+      }
     } catch (error) {
       console.error('GitHub login error:', error);
     }
@@ -44,11 +49,21 @@ export class AuthService {
 
   logout(): Promise<void> {
     this.githubProfileUrlSubject.next(null);
+    localStorage.removeItem('githubAccessToken');
     return this.afAuth.signOut();
   }
 
-  private setGitHubProfileUrl(profile?: GitHubProfile): void {
-    const url = profile?.html_url ?? null;
-    this.githubProfileUrlSubject.next(url);
+  getGithubUser(): Observable<any> {
+    const token = localStorage.getItem('githubAccessToken');
+
+    if (!token) {
+      return throwError(() => new Error('GitHub access token not available.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get('https://api.github.com/user', { headers });
   }
 }

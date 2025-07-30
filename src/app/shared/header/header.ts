@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -15,21 +15,22 @@ export class Header implements OnInit, OnDestroy {
   githubProfileUrl: string | null = null;
   searchQuery = '';
 
-  private userSubscription?: Subscription;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.userSubscription = this.authService.userWithProfile$.subscribe(
-      ({ user, githubUrl }) => {
+    this.authService.userWithProfile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ user, githubUrl }) => {
         this.user = user;
         this.githubProfileUrl = githubUrl;
-      }
-    );
+      });
   }
 
   ngOnDestroy(): void {
-    this.userSubscription?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   goHome(): void {
@@ -45,11 +46,17 @@ export class Header implements OnInit, OnDestroy {
   }
 
   openGithubProfile(): void {
-    if (this.githubProfileUrl) {
-      window.open(this.githubProfileUrl, '_blank', 'noopener');
-    } else {
-      console.warn('GitHub profile URL is not available.');
-    }
+    this.authService
+      .getGithubUser()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (user) => {
+          window.open(user.html_url, '_blank', 'noopener,noreferrer');
+        },
+        error: (err) => {
+          console.error('Failed to fetch GitHub user:', err);
+        },
+      });
   }
 
   openHelp(): void {
