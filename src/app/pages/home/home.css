@@ -59,6 +59,10 @@ td {
   height: 68px;
 }
 
+.ownerCol {
+  width: 16.89%;
+}
+
 .owner {
   display: flex;
   align-items: center;
@@ -71,6 +75,14 @@ td {
   }
 }
 
+.filenameCol {
+  width: 25.34%;
+}
+
+.fileCountCol {
+  width: 16.89%;
+}
+
 .fileCount {
   padding: 4px 16px;
   border-radius: 50px;
@@ -78,18 +90,6 @@ td {
   color: #fff;
   font-weight: 700;
   font-size: 11px;
-}
-
-.ownerCol {
-  width: 16.89%;
-}
-
-.filenameCol {
-  width: 25.34%;
-}
-
-.fileCountCol {
-  width: 16.89%;
 }
 
 .updatedAtCol {
