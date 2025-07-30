@@ -3,6 +3,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Gist } from '../../models/gist.model';
+import { AuthService } from '../../services/auth.service';
 import { GistService } from '../../services/gist.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class Home implements AfterViewInit {
     'updatedAt',
     'actions',
   ];
+  isLoggedIn = false;
   dataSource = new MatTableDataSource<Gist>();
   loading = true;
   error: string | null = null;
@@ -28,9 +30,16 @@ export class Home implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private gistService: GistService) {}
+  constructor(
+    private authService: AuthService,
+    private gistService: GistService
+  ) {}
 
   ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      this.isLoggedIn = !!user;
+    });
+
     this.loadGists();
   }
 
