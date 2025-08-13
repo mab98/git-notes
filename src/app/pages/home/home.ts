@@ -13,6 +13,8 @@ import { GistService } from '../../services/gist.service';
   styleUrl: './home.css',
 })
 export class Home implements AfterViewInit {
+  allGists: Gist[] = [];
+  paginatedGists: Gist[] = [];
   displayedColumns: string[] = [
     'owner',
     'filename',
@@ -20,12 +22,14 @@ export class Home implements AfterViewInit {
     'updatedAt',
     'actions',
   ];
+
   isLoggedIn = false;
   dataSource = new MatTableDataSource<Gist>();
   loading = true;
   error: string | null = null;
 
   pageSize = 10;
+  currentPage = 0;
   viewMode: 'table' | 'card' = 'table';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -45,14 +49,18 @@ export class Home implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
+      this.paginator.page.subscribe((event) => {
+        this.currentPage = event.pageIndex;
+        this.updatePaginatedGists();
+      });
     }
   }
 
   private loadGists(): void {
     this.gistService.getPublicGists().subscribe({
       next: (data) => {
-        this.dataSource.data = data;
+        this.allGists = data;
+        this.updatePaginatedGists();
       },
       error: (err) => {
         this.error = 'Failed to load gists';
@@ -64,11 +72,30 @@ export class Home implements AfterViewInit {
     });
   }
 
-  onViewChange(event: MatButtonToggleChange): void {
-    console.log('View changed to:', event.value);
+  private updatePaginatedGists(): void {
+    const start = this.currentPage * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedGists = this.allGists.slice(start, end);
   }
 
-  getFilename(gist: Gist): string {
+  onViewToggle(event: MatButtonToggleChange): void {
+    this.viewMode = event.value;
+    this.updatePaginatedGists();
+  }
+
+  getGistName(gist: Gist): string {
     return gist?.files ? Object.keys(gist.files)[0] : 'N/A';
+  }
+
+  onGistClick(gist: Gist): void {
+    console.log('Row clicked:', gist);
+  }
+
+  onForkGist(gistId: string): void {
+    console.log('Forking gist with ID:', gistId);
+  }
+
+  onStarGist(gistId: string): void {
+    console.log('Starring gist with ID:', gistId);
   }
 }

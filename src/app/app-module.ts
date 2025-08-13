@@ -20,14 +20,32 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Home } from './pages/home/home';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { GistCards } from './pages/home/gist-cards/gist-cards';
+import { GistTable } from './pages/home/gist-table/gist-table';
+import { ViewToggle } from './pages/home/view-toggle/view-toggle';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
+import { Logo } from './shared/header/logo/logo';
+import { SearchBar } from './shared/header/search-bar/search-bar';
+import { UserMenu } from './shared/header/user-menu/user-menu';
 
 @NgModule({
-  declarations: [App, Header, Home, TimeAgoPipe],
+  declarations: [
+    App,
+    Header,
+    Home,
+    TimeAgoPipe,
+    Logo,
+    SearchBar,
+    UserMenu,
+    GistTable,
+    ViewToggle,
+    GistCards,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -46,6 +64,7 @@ import { TimeAgoPipe } from './pipes/time-ago-pipe';
     MatProgressSpinnerModule,
     MatButtonToggleModule,
     MatTooltipModule,
+    MatCardModule,
   ],
   providers: [provideBrowserGlobalErrorListeners(), provideHttpClient()],
   bootstrap: [App],

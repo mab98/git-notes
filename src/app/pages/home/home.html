@@ -1,86 +1,40 @@
 <div class="root">
   <div class="header">
-    <h2>Public Gists</h2>
-    <mat-button-toggle-group
-      [(value)]="viewMode"
-      class="view-toggle"
-      (change)="onViewChange($event)"
-    >
-      <mat-button-toggle value="card">
-        <img src="images/toggle/card.svg" alt="Card View" />
-      </mat-button-toggle>
-
-      <mat-button-toggle value="table">
-        <img src="images/toggle/table.svg" alt="Table View" />
-      </mat-button-toggle>
-    </mat-button-toggle-group>
+    <p>Public Gists</p>
+    <app-view-toggle [(viewMode)]="viewMode" />
   </div>
 
-  <div *ngIf="loading">Loading gists...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  @if (loading) {
+  <p>Loading gists...</p>
+  } @else if (error) {
+  <p class="error">{{ error }}</p>
+  }
 
-  <div [hidden]="loading || error">
-    <table mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="owner">
-        <th mat-header-cell *matHeaderCellDef class="ownerCol">Name</th>
-        <td mat-cell *matCellDef="let gist" class="ownerCol">
-          <span class="owner">
-            <img [src]="gist.owner?.avatar_url" alt="avatar" />
-            <p class="ellipsis" [matTooltip]="gist.owner?.login">
-              {{ gist.owner?.login }}
-            </p>
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="filename">
-        <th mat-header-cell *matHeaderCellDef class="filenameCol">Filename</th>
-        <td mat-cell *matCellDef="let gist" class="filenameCol">
-          <p class="ellipsis" [matTooltip]="getFilename(gist)">
-            {{ getFilename(gist) }}
-          </p>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="fileCount">
-        <th mat-header-cell *matHeaderCellDef class="fileCountCol">
-          File Count
-        </th>
-        <td mat-cell *matCellDef="let gist" class="fileCountCol">
-          <span class="fileCount">{{
-            gist.files ? (gist.files | keyvalue).length : 0
-          }}</span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="updatedAt">
-        <th mat-header-cell *matHeaderCellDef class="updatedAtCol">
-          Updated At
-        </th>
-        <td mat-cell *matCellDef="let gist" class="updatedAtCol">
-          {{ gist.updated_at | timeAgo }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="actionsCol"></th>
-        <td mat-cell *matCellDef="let gist" class="actionsCol">
-          <div class="actions" *ngIf="isLoggedIn">
-            <img src="images/fork.svg" alt="Fork Icon" />
-            <img src="images/star.svg" alt="Star Icon" />
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+  <div [ngClass]="{ 'hidden-content': loading || error }">
+    @switch (viewMode) { @case ('card') {
+    <app-gist-cards
+      [gists]="paginatedGists"
+      [isLoggedIn]="isLoggedIn"
+      (gistClick)="onGistClick($event)"
+      (fork)="onForkGist($event)"
+      (star)="onStarGist($event)"
+    />
+    } @default {
+    <app-gist-table
+      [gists]="paginatedGists"
+      [isLoggedIn]="isLoggedIn"
+      [displayedColumns]="displayedColumns"
+      (gistClick)="onGistClick($event)"
+      (fork)="onForkGist($event)"
+      (star)="onStarGist($event)"
+    />
+    }}
 
     <mat-paginator
       [pageSize]="pageSize"
       [pageSizeOptions]="[]"
-      [length]="dataSource.data.length"
+      [length]="allGists.length"
       showFirstLastButtons
-    ></mat-paginator>
+    />
   </div>
 </div>

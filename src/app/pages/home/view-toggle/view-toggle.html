@@ -1,0 +1,26 @@
+<mat-button-toggle-group
+  [value]="viewMode"
+  class="view-toggle"
+  (change)="onViewToggle($event.value)"
+>
+  <mat-button-toggle value="card">
+    <img
+      [src]="
+        viewMode === 'card'
+          ? 'images/toggle/active-card.svg'
+          : 'images/toggle/inactive-card.svg'
+      "
+      alt="card icon"
+    />
+  </mat-button-toggle>
+  <mat-button-toggle value="table">
+    <img
+      [src]="
+        viewMode === 'table'
+          ? 'images/toggle/active-table.svg'
+          : 'images/toggle/inactive-table.svg'
+      "
+      alt="table icon"
+    />
+  </mat-button-toggle>
+</mat-button-toggle-group>

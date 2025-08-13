@@ -1,0 +1,86 @@
+table {
+  border-radius: 4px 4px 0 0;
+  border: 1px solid #e3e3e3;
+  background-color: #fff;
+}
+
+th,
+td {
+  border-color: #e3e3e3;
+}
+
+th {
+  font-weight: 700;
+  background-color: #e3e3e3 !important;
+}
+
+td {
+  height: 68px;
+}
+
+/* Column Widths */
+.ownerCol {
+  width: 16.89%;
+}
+
+.filenameCol {
+  width: 25.34%;
+}
+
+.fileCountCol {
+  width: 16.89%;
+}
+
+.updatedAtCol {
+  width: 21.12%;
+}
+
+.actionsCol {
+  width: 19.77%;
+}
+
+/* Table Cell Content */
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.owner img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.fileCount {
+  padding: 4px 16px;
+  border-radius: 50px;
+  background-color: #003b44;
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.actions {
+  display: flex;
+  gap: 32px;
+  justify-content: flex-end;
+  margin-right: 20%;
+
+  img {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+  }
+}
+
+::ng-deep .clickable-row:hover td:not(.actionsCol) {
+  cursor: pointer;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}

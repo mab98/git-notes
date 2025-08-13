@@ -1,0 +1,25 @@
+.search-bar {
+  mat-icon {
+    color: #ffffffcc;
+    margin-top: -2px;
+  }
+
+  input,
+  input::placeholder {
+    color: #ffffffcc;
+    font-size: 14px;
+  }
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    height: 40px;
+  }
+
+  ::ng-deep .mat-mdc-form-field-flex {
+    margin-top: -6px;
+  }
+
+  ::ng-deep.mdc-text-field--outlined:not(.mdc-text-field--disabled)
+    .mat-mdc-notch-piece {
+    border-color: #ffffffcc !important;
+  }
+}

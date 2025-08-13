@@ -1,0 +1,27 @@
+.view-toggle {
+  .mat-button-toggle {
+    border: none;
+  }
+
+  .mat-button-toggle-checked {
+    background-color: #e3e3e3;
+  }
+}
+
+.mat-button-toggle-group-appearance-standard {
+  border-radius: 4px;
+  border: 1px solid #e3e3e3;
+  height: 36px;
+}
+
+::ng-deep .mat-button-toggle-button {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-button-toggle-checkbox-wrapper {
+  display: none !important;
+}
+
+::ng-deep .mat-button-toggle-label-content {
+  line-height: 30px !important;
+}

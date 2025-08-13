@@ -7,111 +7,20 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-}
 
-h2 {
-  font-size: 25px;
-  font-weight: 400;
-}
-
-.view-toggle {
-  .mat-button-toggle {
-    border: none;
-  }
-
-  .mat-button-toggle-checked {
-    background-color: #e3e3e3;
+  p {
+    font-size: 25px;
+    font-weight: 400;
   }
 }
 
-.mat-button-toggle-group-appearance-standard {
-  border-radius: 4px;
-  border: 1px solid #e3e3e3;
-  height: 36px;
+.error {
+  color: red;
 }
 
-::ng-deep .mat-button-toggle-button {
-  padding: 0 !important;
-}
-
-::ng-deep .mat-button-toggle-checkbox-wrapper {
-  display: none !important;
-}
-
-::ng-deep .mat-button-toggle-label-content {
-  line-height: 30px !important;
-}
-
-table {
-  border-radius: 4px 4px 0 0;
-  border: 1px solid #e3e3e3;
-  background-color: #fff;
-}
-
-th {
-  font-weight: 700;
-  border-color: #e3e3e3;
-  background-color: #e3e3e3 !important;
-}
-
-td {
-  border-color: #e3e3e3;
-  height: 68px;
-}
-
-.ownerCol {
-  width: 16.89%;
-}
-
-.owner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-}
-
-.ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 200px;
-}
-
-.filenameCol {
-  width: 25.34%;
-}
-
-.fileCountCol {
-  width: 16.89%;
-}
-
-.fileCount {
-  padding: 4px 16px;
-  border-radius: 50px;
-  background-color: #003b44;
-  color: #fff;
-  font-weight: 700;
-  font-size: 11px;
-}
-
-.updatedAtCol {
-  width: 21.12%;
-}
-
-.actionsCol {
-  width: 19.77%;
-}
-
-.actions {
-  display: flex;
-  gap: 32px;
-  justify-content: end;
-  margin-right: 20%;
+.hidden-content {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .mat-mdc-paginator {

@@ -1,0 +1,17 @@
+<button mat-button [matMenuTriggerFor]="profileMenu" class="profile-btn">
+  <img [src]="user.photoURL" alt="User photo" class="profile-img" />
+</button>
+
+<mat-menu #profileMenu="matMenu" class="profile-menu">
+  <p class="user-label">Signed in as</p>
+  <strong class="user-name">{{ user.displayName }}</strong>
+  <mat-divider />
+  <button mat-menu-item (click)="emit(yourGists)">Your gists</button>
+  <button mat-menu-item (click)="emit(starredGists)">Starred gists</button>
+  <button mat-menu-item (click)="emit(githubProfile)">
+    Your GitHub Profile
+  </button>
+  <mat-divider />
+  <button mat-menu-item (click)="emit(help)">Help</button>
+  <button mat-menu-item (click)="emit(logout)">Sign out</button>
+</mat-menu>

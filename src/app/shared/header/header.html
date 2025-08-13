@@ -1,46 +1,21 @@
-<header class="root">
-  <img
-    src="images/logo.svg"
-    alt="Emumba Logo"
-    class="logo"
-    (click)="goHome()"
-  />
+<header>
+  <app-logo (logoClick)="goHome()" />
 
-  <div class="actions">
-    <mat-form-field appearance="outline" class="search-bar">
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        matInput
-        [(ngModel)]="searchQuery"
-        placeholder="Search gists..."
-        (keyup.enter)="onSearch()"
-      />
-    </mat-form-field>
+  <div>
+    <app-search-bar [(searchQuery)]="searchQuery" (search)="onSearch()" />
 
-    <ng-container *ngIf="user; else loginTemplate">
-      <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-btn">
-        <img [src]="user.photoURL" alt="User photo" class="profile-img" />
-      </button>
-
-      <mat-menu #profileMenu="matMenu" class="profile-menu">
-        <p class="user-label">Signed in as</p>
-        <strong class="user-name">{{ user.displayName }}</strong>
-        <mat-divider />
-        <button mat-menu-item (click)="openYourGists()">Your gists</button>
-        <button mat-menu-item (click)="openStarredGists()">
-          Starred gists
-        </button>
-        <button mat-menu-item (click)="openGithubProfile()">
-          Your GitHub Profile
-        </button>
-        <mat-divider />
-        <button mat-menu-item (click)="openHelp()">Help</button>
-        <button mat-menu-item (click)="logout()">Sign out</button>
-      </mat-menu>
-    </ng-container>
-
-    <ng-template #loginTemplate>
-      <button (click)="login()" class="login-button">Login</button>
-    </ng-template>
+    @if (user) {
+    <app-user-menu
+      [user]="user"
+      [githubProfileUrl]="githubProfileUrl"
+      (yourGists)="openYourGists()"
+      (starredGists)="openStarredGists()"
+      (githubProfile)="openGithubProfile()"
+      (help)="openHelp()"
+      (logout)="logout()"
+    />
+    } @else {
+    <button (click)="login()">Login</button>
+    }
   </div>
 </header>

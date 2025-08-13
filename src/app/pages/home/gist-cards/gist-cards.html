@@ -1,0 +1,57 @@
+<div class="cards">
+  @for (gist of gists; track $index) {
+  <mat-card class="card">
+    <mat-card-content>
+      <div class="code-container" (click)="gistClick.emit(gist)">
+        <pre><code>{{ "codeSnippet" }}</code></pre>
+        <span class="view-label ellipsis"
+          >View
+          <b [matTooltip]="getGistName(gist)">{{ getGistName(gist) }}</b></span
+        >
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class="footer">
+        <div class="detail">
+          <div class="avatar">
+            <img [src]="gist.owner.avatar_url" alt="avatar" />
+          </div>
+
+          <div class="text-box">
+            <div class="text">
+              <p class="ellipsis" [matTooltip]="gist.owner.login">
+                {{ gist.owner.login }}
+              </p>
+              /
+              <strong class="ellipsis" [matTooltip]="getGistName(gist)">
+                {{ getGistName(gist) }}
+              </strong>
+            </div>
+
+            <p class="created-at">{{ gist.created_at | timeAgo }}</p>
+            <p class="description ellipsis" [matTooltip]="gist.description">
+              {{ gist.description || "No description" }}
+            </p>
+          </div>
+        </div>
+
+        @if (isLoggedIn) {
+        <div class="actions">
+          <button
+            mat-icon-button
+            (click)="fork.emit(gist.id); $event.stopPropagation()"
+          >
+            <img src="images/fork.svg" alt="Fork Icon" />
+          </button>
+          <button
+            mat-icon-button
+            (click)="star.emit(gist.id); $event.stopPropagation()"
+          >
+            <img src="images/star.svg" alt="Star Icon" />
+          </button>
+        </div>
+        }
+      </div>
+    </mat-card-footer> </mat-card
+  >}
+</div>
